@@ -39,4 +39,5 @@ VectorTwo VectorTwo::Rotate(float radians) const
 	float y_ = x * Math::Cos(radians) + y * Math::Cos(radians);
 
 	return { x_, y_ };
+	//boo 
 }
