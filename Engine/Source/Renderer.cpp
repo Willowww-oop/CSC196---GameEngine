@@ -19,6 +19,8 @@ void Renderer::Shutdown()
 
 bool Renderer::CreateWindow(std::string title, int width, int height)
 {
+	m_width = width;
+	m_height = height;
 	// create window
 // returns pointer to window if successful or nullptr if failed
 	SDL_Window* window = SDL_CreateWindow(title.c_str(),
@@ -33,7 +35,13 @@ bool Renderer::CreateWindow(std::string title, int width, int height)
 	}
 
 	// create renderer
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
+	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (m_renderer == nullptr)
+	{
+		std::cerr << "Error creating SDL renderer: " << SDL_GetError() << std::endl;
+		SDL_Quit();
+		return false;
+	}
 
 	return true;
 }
@@ -45,9 +53,10 @@ void Renderer::BeginFrame()
 
 void Renderer::EndFrame()
 {
+	SDL_RenderPresent(m_renderer);
 }
 
-void Renderer::SetColor(uint8_t r, uint8_t g, uint8_t b)
+void Renderer::SetColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	SDL_SetRenderDrawColor(m_renderer, r, g, b, 0);
 }

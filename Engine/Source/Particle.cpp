@@ -1,5 +1,4 @@
 #include "Particle.h"
-#include <iostream>
 
 void Particle::Update(float dt)
 {
@@ -9,5 +8,9 @@ void Particle::Update(float dt)
 
 void Particle::Draw(Renderer& renderer)
 {
+	if (lifespan >= 0)
+	{
+		renderer.SetColor(r, g, b, a);
+		renderer.DrawRect(position.x, position.y, 4.0f, 4.0f);
+	}
 }
-
