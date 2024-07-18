@@ -78,12 +78,17 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SLD2\SDL2-2.30.4\include;$(SolutionDir)Engine\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SLD2\include;$(SolutionDir)Engine\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SLD2\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)ThirdParty\SLD2\lib\$(PlatformTarget)\SDL2.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -95,14 +100,19 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SLD2\SDL2-2.30.4\include;$(SolutionDir)Engine\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SLD2\include;$(SolutionDir)Engine\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SLD2\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)ThirdParty\SLD2\lib\$(PlatformTarget)\SDL2.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,14 +120,19 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SLD2\SDL2-2.30.4\include;$(SolutionDir)Engine\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SLD2\include;$(SolutionDir)Engine\Source</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SLD2\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)ThirdParty\SLD2\lib\$(PlatformTarget)\SDL2.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -129,14 +144,19 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SLD2\SDL2-2.30.4\include;$(SolutionDir)Engine\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SLD2\include;$(SolutionDir)Engine\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SLD2\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)ThirdParty\SLD2\lib\$(PlatformTarget)\SDL2.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Bullet.cpp" />
@@ -153,7 +173,6 @@
     <ClInclude Include="Source\Bullet.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\Player.h" />
-    <ClInclude Include="Source\Player1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

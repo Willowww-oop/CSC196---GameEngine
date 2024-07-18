@@ -20,6 +20,8 @@ public:
 	void Draw(Renderer& renderer, const VectorTwo& position, float angle, float scale);
 	void Draw(Renderer& renderer, Transform& transform);
 
+	float GetRadius();
+
 
 private:
 	std::vector<VectorTwo> m_points;

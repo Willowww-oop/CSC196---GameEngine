@@ -3,6 +3,8 @@
 #include "Scene.h"
 #include "Bullet.h"
 
+#include <iostream>
+
 void Player::Update(float dt)
 {
 	// Movement
@@ -39,11 +41,22 @@ void Player::Update(float dt)
 
 		Bullet* bullet = new Bullet(400, transform, model);
 		bullet->SetLifespan(1);
+
+		bullet->SetTag("Player");
+
 		m_scene->AddActor(bullet);
 		
 	}
 
 
 	Actor::Update(dt);
+}
+
+void Player::OnCollision(Actor* actor)
+{
+	if (actor->GetTag() == "Enemy")
+	{
+		m_destroyed = true;
+	}
 }
 

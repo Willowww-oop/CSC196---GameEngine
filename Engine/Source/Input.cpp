@@ -8,11 +8,11 @@ bool Input::Initialize()
 
 	m_keyboardState.resize(numKeys);
 
-	std::copy(keyboardState, keyboardState + numKeys, m_keyboardState.begin());
+	copy(keyboardState, keyboardState + numKeys, m_keyboardState.begin());
 
 	m_prevKeyboardState = m_keyboardState;
 
-	return false;
+	return true;
 }
 
 void Input::Shutdown()

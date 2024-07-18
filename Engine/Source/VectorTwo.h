@@ -38,7 +38,7 @@ struct VectorTwo
 	VectorTwo operator /= (float s) const { return VectorTwo{ x / s, y / s }; }
 
 	float LengthSqr() { return (x * x) + (y * y); }
-	float Length() { return Math::Sqrt((x * x) + (y * y)); }
+	float Length() const { return Math::Sqrt((x * x) + (y * y)); }
 
 	float Angle() const { return Math::Atan2(y, x); }
 	VectorTwo Rotate(float radians) const;

@@ -13,12 +13,6 @@ int main(int argc, char* argv[])
 	g_engine.Initialize();
 
 
-	Renderer renderer;
-	renderer.Initialize();
-	renderer.CreateWindow("Game Engine", 800, 600);
-
-	Input input;
-	input.Initialize();
 
 	Time time;
 
@@ -45,27 +39,30 @@ int main(int argc, char* argv[])
 	points.push_back(VectorTwo{ -5, 5 });
 	points.push_back(VectorTwo{ 5, 0 });
 
-	Model* model = new Model{ points, Color{ 1, 1, 1, 0} };
+	Model* model = new Model{ points, Color{ 1.0f, 1.0f, 1.0f, 0.0f} };
 	Scene* scene = new Scene();
 
 
-	Transform transform{ VectorTwo { 400, 300} , 0, random(1, 5) };
-	Player* player = new Player(randomf(300, 500), transform, model);
+	Transform transform{ VectorTwo { 400, 300} , 0, randomf(1, 5) };
+	Player* player = new Player(randomf(300.0f, 500.0f), transform, model);
 	player->SetDamping(0.8f);
+	player->SetTag("Player");
 	scene->AddActor(player);
 
-	Model* enemyModel = new Model{ points, Color{ 1, 0, 3, 0} };
+	auto* enemyModel = new Model{ points, Color{ 1, 0, 3, 0} };
 
-	Enemy* enemy = new Enemy(400, Transform{ { 300, 300 }, 0, 2 }, enemyModel);
+	auto* enemy = new Enemy(400, Transform{ {10, 10 }, 0, 2 }, enemyModel);
+	enemy->SetDamping(1.0f);
+	enemy->SetTag("Enemy");
 	scene->AddActor(enemy);
 
 
-			// 0001 = 1
-			// 0010 = 2
-			// 0100 = 4
-			// 1000 = 8
+		// 0001 = 1
+		// 0010 = 2
+		// 0100 = 4
+		// 1000 = 8
 
-			// >> 1
+		// >> 1
 
 		float rotation = 0;
 
@@ -79,13 +76,14 @@ int main(int argc, char* argv[])
 		VectorTwo v1{ 400, 300 };
 		VectorTwo v2{ 100, 600 };
 
-		std::vector<VectorTwo> points;
-		for (int i = 0; 1 < 100; i++)
-		{
-			points.push_back(VectorTwo{ rand() % 800, rand() % 600 });
-		}
+		//for (int i = 0; 1 < 100; i++)
+		//{
+		//	points.push_back(VectorTwo{ rand() % 800, rand() % 600 });
+		//}
 
-		float offset = 0;
+		//float offset = 0;
+
+		float spawnTimer = 2;
 
 
 		// Main loop
@@ -93,7 +91,6 @@ int main(int argc, char* argv[])
 		while (!quit)
 		{
 			time.Tick();
-			std::cout << time.GetTime() << std::endl;
 
 
 			// INPUT 
@@ -109,12 +106,13 @@ int main(int argc, char* argv[])
 			//transform.rotation = transform.rotation + time.GetDeltaTime();
 
 
+
 			// UPDATE
 			scene->Update(time.GetDeltaTime());
 
 			VectorTwo mousePosition = g_engine.GetInput().GetMousePosition();
 
-			if (input.GetMouseButtonDown(0))
+			if (g_engine.GetInput().GetMouseButtonDown(0))
 			{
 				particles.push_back(Particle{ mousePosition, randomOnUnitCircle() * randomf(50, 300), 1.0f, random(255), random(255), random(255), 0 });
 			}
@@ -127,9 +125,7 @@ int main(int argc, char* argv[])
 			}
 
 
-			std::cout << mousePosition.x << " " << mousePosition.y << std::endl;
-
-			if (input.GetMouseButtonDown(0) && !input.GetPrevMouseButtonDown(0))
+			if (g_engine.GetInput().GetMouseButtonDown(0) && !g_engine.GetInput().GetPrevMouseButtonDown(0))
 			{
 				std::cout << "mouse pressed" << std::endl;
 				points.push_back(mousePosition);
@@ -151,10 +147,10 @@ int main(int argc, char* argv[])
 
 			// DRAW
 			// clear screen
-			renderer.SetColor(0, 0, 0, 0);
-			renderer.BeginFrame();
+			g_engine.GetRenderer().SetColor(0, 0, 0, 0);
+			g_engine.GetRenderer().BeginFrame();
 
-			renderer.SetColor(255, 255, 255, 0);
+			g_engine.GetRenderer().SetColor(255, 255, 255, 0);
 			float radius = 60;
 			offset += (90 * time.GetDeltaTime());
 
@@ -163,7 +159,7 @@ int main(int argc, char* argv[])
 				float x = Math::Cos(Math::DegToRad(angle + offset)) * Math::Sin(offset + angle) * radius;
 				float y = Math::Sin(Math::DegToRad(angle + offset)) * Math::Sin(offset + angle) * radius;
 
-				renderer.DrawRect(400 + x, 300 + y, 4.0f, 4.0f);
+				g_engine.GetRenderer().DrawRect(400 + x, 300 + y, 4.0f, 4.0f);
 			}
 
 
@@ -174,10 +170,11 @@ int main(int argc, char* argv[])
 			g_engine.GetRenderer().DrawLine(500, 400, 300, 400);
 			g_engine.GetRenderer().DrawLine(v1.x, v1.y, v2.x, v2.y);
 
-			for (int i = 0; points.size() > 1 && i < points.size(); i++)
+			for (int i = 0; points.size() > 2 && i < points.size() - 1; i++)
 			{
 				g_engine.GetRenderer().DrawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
 			}
+			
 
 			for (int i = 0; i < 50; i++)
 			{
@@ -187,7 +184,7 @@ int main(int argc, char* argv[])
 				g_engine.GetRenderer().DrawLine(rand() % 800, rand() % 600, rand() % 800, rand() % 600);
 			}
 
-			renderer.SetColor(255, 255, 255, 0);
+			g_engine.GetRenderer().SetColor(255, 255, 255, 0);
 			for (Particle particle : particles)
 			{
 				particle.Draw(g_engine.GetRenderer());
@@ -197,7 +194,9 @@ int main(int argc, char* argv[])
 
 
 			g_engine.GetRenderer().EndFrame();
+
+
 		}
 
-		//return 0;
+		return 0;
 	}
