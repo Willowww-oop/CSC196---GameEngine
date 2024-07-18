@@ -164,11 +164,7 @@ int main(int argc, char* argv[])
 
 
 			//	// draw line
-			g_engine.GetRenderer().SetColor(255, 255, 255, 0);
-			g_engine.GetRenderer().DrawLine(300, 400, 400, 300);
-			g_engine.GetRenderer().DrawLine(400, 300, 500, 500);
-			g_engine.GetRenderer().DrawLine(500, 400, 300, 400);
-			g_engine.GetRenderer().DrawLine(v1.x, v1.y, v2.x, v2.y);
+
 
 			for (int i = 0; points.size() > 2 && i < points.size() - 1; i++)
 			{
@@ -176,13 +172,6 @@ int main(int argc, char* argv[])
 			}
 			
 
-			for (int i = 0; i < 50; i++)
-			{
-				g_engine.GetRenderer().SetColor(rand() % 256, rand() % 256, rand() % 256, 0);
-				g_engine.GetRenderer().DrawLine(rand() % 800, rand() % 600, rand() % 800, rand() % 600);
-				g_engine.GetRenderer().SetColor(rand() % 256, rand() % 256, rand() % 256, 0);
-				g_engine.GetRenderer().DrawLine(rand() % 800, rand() % 600, rand() % 800, rand() % 600);
-			}
 
 			g_engine.GetRenderer().SetColor(255, 255, 255, 0);
 			for (Particle particle : particles)
