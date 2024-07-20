@@ -24,9 +24,12 @@ void Scene::Update(float dt)
 
 	// m_actors.erase(m_actors.begin(), m_actors.end());
 	
-	m_actors.erase(std::remove_if(m_actors.begin(), m_actors.end(), 
+	/*m_actors.erase(std::remove_if(m_actors.begin(), m_actors.end(),
 		[](Actor* actor) { return actor->m_destroyed; }), m_actors.end()
 		);
+		*/
+
+	std::erase_if(m_actors, [](Actor* actor) { return actor->m_destroyed; });
 
 	// Collision
 
