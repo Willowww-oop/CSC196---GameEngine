@@ -15,7 +15,33 @@ int main(int argc, char* argv[])
 
 	g_engine.Initialize();
 
+	MyGame* game = new MyGame(&g_engine);
+	game->Initialize();
 
+
+
+	while (!g_engine.IsQuit())
+	{
+		g_engine.Update();
+		game->Update(g_engine.GetTime().GetDeltaTime());
+		
+		g_engine.GetRenderer().SetColor(0, 0, 0, 0);
+		g_engine.GetRenderer().BeginFrame();
+
+		game->Draw(g_engine.GetRenderer());
+
+		g_engine.GetPS().Draw(g_engine.GetRenderer());
+
+		g_engine.GetRenderer().EndFrame();
+
+	}
+	g_engine.Shutdown();
+
+	return 0;
+}
+
+
+	/*
 	//g_engine.GetAudio()->AddSounds("bass.wav");
 	//g_engine.GetAudio()->AddSounds("bass.wav");
 	//g_engine.GetAudio()->AddSounds("bass.wav");
@@ -34,22 +60,6 @@ int main(int argc, char* argv[])
 	std::vector<VectorTwo> points;
 
 
-	Model* model = new Model{ GameData::shipPoints, Color{ 1.0f, 1.0f, 1.0f, 0.0f} };
-	Scene* scene = new Scene();
-
-
-	Transform transform{ VectorTwo { 400, 300} , 0, 3 };
-	Player* player = new Player(randomf(200, 500.0f), transform, model);
-	player->SetDamping(0.8f);
-	player->SetTag("Player");
-	scene->AddActor(player);
-
-	auto* enemyModel = new Model{ GameData::shipPoints, Color{ 1, 0, 3, 0} };
-
-	auto* enemy = new Enemy(400, Transform{ {10, 10 }, 0, 2 }, enemyModel);
-	enemy->SetDamping(1.0f);
-	enemy->SetTag("Enemy");
-	scene->AddActor(enemy);
 
 
 		// 0001 = 1
@@ -153,6 +163,8 @@ int main(int argc, char* argv[])
 
 		}
 
+		g_engine.Shutdown();
+
 		return 0;
 	}
-	
+	*/

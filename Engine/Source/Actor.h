@@ -1,9 +1,9 @@
 #pragma once
 #include "Transform.h"
+#include "Renderer.h"
 #include <string>
-// #include "Model.h"
+#include "Model.h"
 
-class Model;
 class Renderer;
 class Scene;
 
@@ -30,6 +30,7 @@ public:
 
 
 	virtual void OnCollision(Actor* actor) = 0;
+	float GetRadius() { return (m_model) ? m_model->GetRadius() * m_transform.scale : 0; }
 
 	friend class Scene;
 

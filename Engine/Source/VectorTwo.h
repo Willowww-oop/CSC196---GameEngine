@@ -22,20 +22,20 @@ struct VectorTwo
 	VectorTwo operator * (const VectorTwo& v) const { return VectorTwo{ x * v.x, y * v.y }; }
 	VectorTwo operator / (const VectorTwo& v) const { return VectorTwo{ x / v.x, y / v.y }; }
 
-	VectorTwo operator += (const VectorTwo& v) const { return VectorTwo{ x + v.x, y + v.y }; }
-	VectorTwo operator -= (const VectorTwo& v) const { return VectorTwo{ x - v.x, y - v.y }; }
-	VectorTwo operator *= (const VectorTwo& v) const { return VectorTwo{ x * v.x, y * v.y }; }
-	VectorTwo operator /= (const VectorTwo& v) const { return VectorTwo{ x / v.x, y / v.y }; }
+	VectorTwo operator += (const VectorTwo& v) { return VectorTwo{ x += v.x, y += v.y }; }
+	VectorTwo operator -= (const VectorTwo& v) { return VectorTwo{ x -= v.x, y -= v.y }; }
+	VectorTwo operator *= (const VectorTwo& v) { return VectorTwo{ x *= v.x, y *= v.y }; }
+	VectorTwo operator /= (const VectorTwo& v) { return VectorTwo{ x /= v.x, y /= v.y }; }
 
 	VectorTwo operator + (float s) const { return VectorTwo{ x + s, y + s }; }
 	VectorTwo operator - (float s) const { return VectorTwo{ x - s, y - s }; }
 	VectorTwo operator * (float s) const { return VectorTwo{ x * s, y * s }; }
 	VectorTwo operator / (float s) const { return VectorTwo{ x / s, y / s }; }
 
-	VectorTwo operator += (float s) const { return VectorTwo{ x + s, y + s }; }
-	VectorTwo operator -= (float s) const { return VectorTwo{ x - s, y - s }; }
-	VectorTwo operator *= (float s) const { return VectorTwo{ x * s, y * s }; }
-	VectorTwo operator /= (float s) const { return VectorTwo{ x / s, y / s }; }
+	VectorTwo operator += (float s) { return VectorTwo{ x += s, y += s }; }
+	VectorTwo operator -= (float s) { return VectorTwo{ x -= s, y -= s }; }
+	VectorTwo operator *= (float s) { return VectorTwo{ x *= s, y *= s }; }
+	VectorTwo operator /= (float s) { return VectorTwo{ x /= s, y /= s }; }
 
 	float LengthSqr() { return (x * x) + (y * y); }
 	float Length() const { return Math::Sqrt((x * x) + (y * y)); }

@@ -18,9 +18,11 @@ public:
 
 	void Update(float dt);
 	virtual void OnCollision(Actor* actor);
+	void SetFireModifer(float modifer) { m_fireModifer = modifer; }
 
 private:
 	float m_speed = 0.0f;
-	float m_fireTimer = 0.0f;
+	float m_fireTimer = 0.3f;
+	float m_fireModifer = 1.0f;
 
 };

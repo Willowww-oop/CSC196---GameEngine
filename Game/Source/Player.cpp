@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "Scene.h"
 #include "Bullet.h"
+#include "MyGame.h"
 
 #include <iostream>
 
@@ -10,19 +11,30 @@ void Player::Update(float dt)
 	// Movement
 
 	float thrust = 0;
+	VectorTwo direction{ 0, 0 };
 
-	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_UP)) thrust = m_speed;
-	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_DOWN)) thrust = m_speed;
+	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_W))
+	{
+		direction.x = 1;
+	}
+	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_S)) direction.x = -1;
+
+	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_Q)) direction.y = -1;
+	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_E)) direction.y = 1;
 
 
-	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_LEFT)) m_transform.rotation -= Math::DegToRad(100) * dt;
-	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_RIGHT)) m_transform.rotation += Math::DegToRad(100) * dt;
+	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_A)) m_transform.rotation -= Math::DegToRad(100) * dt;
+	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_D)) m_transform.rotation += Math::DegToRad(100) * dt;
 
-	VectorTwo acceleration = VectorTwo{ thrust, 0.0f, }.Rotate(m_transform.rotation);
+
+	//m_velocity += VectorTwo{ thrust, 0.0f }.Rotate(m_transform.rotation);
+
+
+	VectorTwo acceleration = direction.Rotate(m_transform.rotation) * m_speed;
 	m_velocity += acceleration * dt;
 
-	m_transform.position.x = Math::Wrap(m_transform.position.x, (float)g_engine.GetRenderer().GetWidth());
-	m_transform.position.x = Math::Wrap(m_transform.position.x, (float)g_engine.GetRenderer().GetWidth());
+	//m_transform.position.x = Math::Wrap(m_transform.position.x, (float)g_engine.GetRenderer().GetWidth());
+	//m_transform.position.y = Math::Wrap(m_transform.position.y, (float)g_engine.GetRenderer().GetHeight());
 
 	// Shoot
 	
@@ -30,7 +42,11 @@ void Player::Update(float dt)
 
 	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_SPACE) && m_fireTimer <=0/* && !g_engine.GetInput().GetPrevKeyDown(SDL_SCANCODE_SPACE)*/)
 	{
-		m_fireTimer = 1;
+		m_fireTimer = 0.2f;
+
+		VectorTwo direction = g_engine.GetInput().GetMousePosition() - m_transform.position;
+		float angle = direction.Angle();
+
 
 		std::vector<VectorTwo> points;
 		points.push_back(VectorTwo{ 5, 0 });
@@ -39,14 +55,14 @@ void Player::Update(float dt)
 		points.push_back(VectorTwo{ 5, 0 });
 
 		Model* model = new Model{ points, Color{ 1, 1, 0, 0} };
-		Transform transform{ m_transform.position, m_transform.rotation, 1.0f };
+		Transform transform{ m_transform.position, angle , 1.0f };
 
-		Bullet* bullet = new Bullet(400, transform, model);
-		bullet->SetLifespan(1);
+		auto bullet = std::make_unique<Bullet>(400.0f, transform, model);
+		bullet->SetLifespan(0.01f);
 
-		bullet->SetTag("Player");
+		bullet->SetTag("Bullet");
 
-		m_scene->AddActor(bullet);
+		m_scene->AddActor(std::move(bullet));
 		
 	}
 
@@ -59,6 +75,14 @@ void Player::OnCollision(Actor* actor)
 	if (actor->GetTag() == "Enemy")
 	{
 		m_destroyed = true;
+
+		/*MyGame* game = dynamic_cast <MyGame*>(m_scene->GetGame())->OnPlayerDeath();
+		if (game)
+		{
+			game->OnPlayerDeath();
+		}*/
+
+		dynamic_cast <MyGame*>(m_scene->GetGame())->OnPlayerDeath();
 	}
 }
 

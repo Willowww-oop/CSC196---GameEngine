@@ -1,5 +1,5 @@
 #pragma once
-//#include <fmod.hpp>
+#include <fmod.hpp>
 #include <map>
 #include <string>
 
@@ -19,8 +19,6 @@ public:
 	bool PlaySound(const std::string& name);
 
 private:
-	//FMOD::System* m_audio{ nullptr };
-	//std::map<std::string, FMOD::Sound*> m_sounds;
-
-
+	FMOD::System* m_audio{ nullptr };
+	std::map<std::string, FMOD::Sound*> m_sounds;
 };
