@@ -33,12 +33,36 @@ void Player::Update(float dt)
 	VectorTwo acceleration = direction.Rotate(m_transform.rotation) * m_speed;
 	m_velocity += acceleration * dt;
 
+
+	if (m_transform.position.x > 1000) m_transform.position.x = 0;
+	if (m_transform.position.x < 0) m_transform.position.x = 1000;
+	if (m_transform.position.y > 800) m_transform.position.y = 0;
+	if (m_transform.position.y < 0) m_transform.position.y = 800;
+
 	//m_transform.position.x = Math::Wrap(m_transform.position.x, (float)g_engine.GetRenderer().GetWidth());
 	//m_transform.position.y = Math::Wrap(m_transform.position.y, (float)g_engine.GetRenderer().GetHeight());
 
 	// Shoot
 	
 	m_fireTimer -= dt;
+	std::vector<Particle> particles;
+
+	if (g_engine.GetInput().GetMouseButtonDown(0))
+	{
+		for (int i = 0; i < 300; i++)
+		
+			particles.push_back(Particle{ g_engine.GetInput().GetMousePosition(), randomOnUnitCircle() * randomf(10, 200), 1.0f, random(255), random(255), random(255), 0});
+		}
+	}
+
+	for (Particle& particle : particles)
+	{
+		particle.Update(g_engine.GetTime().GetDeltaTime());
+		if (particle.position.x > 1000) particle.position.x = 0;
+		if (particle.position.x < 0) particle.position.x = 1000;
+		if (particle.position.y > 800) particle.position.y = 0;
+		if (particle.position.y < 0) particle.position.y = 800;
+	}
 
 	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_SPACE) && m_fireTimer <=0/* && !g_engine.GetInput().GetPrevKeyDown(SDL_SCANCODE_SPACE)*/)
 	{
@@ -58,7 +82,7 @@ void Player::Update(float dt)
 		Transform transform{ m_transform.position, angle , 1.0f };
 
 		auto bullet = std::make_unique<Bullet>(400.0f, transform, model);
-		bullet->SetLifespan(0.01f);
+		bullet->SetLifespan(2.0f);
 
 		bullet->SetTag("Bullet");
 

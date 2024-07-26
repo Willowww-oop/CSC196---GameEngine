@@ -6,16 +6,24 @@
 #include "Enemy.h"
 #include "Model.h"
 #include "PickUp.h"
+#include "Font.h"
+#include "Text.h"
 
 bool MyGame::Initialize()
 {
 	m_scene = new Scene(this);
 
 
-	//m_font = new Font();
-	//m_font->Load("arcadeclassic.ttf", 20);
+	if (TTF_Init() == -1) {
+		printf("TTF_Init: %s\n", TTF_GetError());
+		exit(2);
+	}
 
-	//m_fontLarge->Load("arcadeclassic.ttf", 70)
+
+	//m_font = new Font();
+	//m_font->Load("MoulinRougeFLF.ttf", 20);
+
+	//m_fontLarge->Load("MoulinRougeFLF.ttf", 70);
 
 	//m_textScore = new Text(m_font);
 	//m_textLives = new Text(m_font);
@@ -27,7 +35,8 @@ bool MyGame::Initialize()
 	g_engine.GetAudio().AddSound("cowbell.wav");
 	g_engine.GetAudio().AddSound("open-hat.wav");
 	g_engine.GetAudio().AddSound("snare.wav");
-	//g_engine.GetAudio().AddSound("test.wav");
+	g_engine.GetAudio().AddSound("test.wav");
+	g_engine.GetAudio().AddSound("MyGameTheme.wav");
 	
 
 	return true;
@@ -81,6 +90,9 @@ void MyGame::Update(float dt)
 		if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_Y)&& !g_engine.GetInput().GetPrevKeyDown(SDL_SCANCODE_Y)) g_engine.GetAudio().PlaySound("bass.wav");
 		if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_U)&& !g_engine.GetInput().GetPrevKeyDown(SDL_SCANCODE_U)) g_engine.GetAudio().PlaySound("cowbell.wav");
 		if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_R)&& !g_engine.GetInput().GetPrevKeyDown(SDL_SCANCODE_R)) g_engine.GetAudio().PlaySound("test.wav");
+
+
+		g_engine.GetAudio().PlaySound("MyGameTheme.wav");
 
 		m_spawnTimer -= dt;
 		if (m_spawnTimer <= 0)
@@ -138,7 +150,7 @@ void MyGame::Draw(Renderer& renderer)
 	case MyGame::eState::Title:
 
 		//m_textTitle->Create(renderer, "Pew! Pew!", Color{1, 0, 0, 1});
-		//m_textTitle->Draw(renderer, 260, 300);
+	//	m_textTitle->Draw(renderer, 260, 300);
 
 		break;
 	case MyGame::eState::GameOver:
@@ -153,12 +165,12 @@ void MyGame::Draw(Renderer& renderer)
 	}
 
 	std::string text = "Score " + std::to_string(m_score);
-	//m_textScore->Create(renderer, text, { 0, 1, 0, 1 })
+	//m_textScore->Create(renderer, text, { 0, 1, 0, 1 });
 	//m_textScore->Draw(renderer, 20, 20);
 
 	text = "Lives " + std::to_string(m_lives);
-	//m_textLives->Create(renderer, text, {0, 1, 0, 1)};
-	//m_textLives->Draw(renderer, renderer.GetWidth() - 100, 20)}
+	//m_textLives->Create(renderer, text, {0, 1, 0, 1});
+	//m_textLives->Draw(renderer, renderer.GetWidth() - 100, 20);
 
 
 	m_scene->Draw(renderer);

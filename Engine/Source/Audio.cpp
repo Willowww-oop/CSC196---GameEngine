@@ -25,7 +25,7 @@ void Audio::Update()
 bool Audio::AddSound(const std::string& name)
 {
     FMOD::Sound* sound = nullptr;
-    m_audio->createSound("test.wav", FMOD_DEFAULT, 0, &sound);
+    m_audio->createSound(name.c_str(), FMOD_DEFAULT, 0, &sound);
 
     if (sound == nullptr)
     {

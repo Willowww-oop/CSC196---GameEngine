@@ -22,6 +22,7 @@ void Enemy::OnCollision(Actor* actor)
 	if (actor->GetTag() == "Player" || actor->GetTag() == "Bullet")
 	{
 		m_scene->GetGame()->AddPoints(100);
+		
 
 		m_destroyed = true;
 		
